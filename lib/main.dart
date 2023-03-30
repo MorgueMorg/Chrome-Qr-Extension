@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(const App());
 
@@ -27,6 +28,27 @@ class _HomePageState extends State<HomePage> {
 
   String qrText = '';
 
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  late SharedPreferences prefs;
+
+  _asyncInitialization() async {
+    prefs = await _prefs;
+    qrText = prefs.getString('qrText') ?? '';
+    return qrText;
+  }
+
+  @override
+  void initState() {
+    _asyncInitialization().then((result) {
+      qrText = prefs.getString('qrText') ?? '';
+      _textController = TextEditingController(text: qrText);
+      _textFocus = FocusNode();
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +58,8 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
+              controller: _textController,
+              focusNode: _textFocus,
               decoration: InputDecoration(
                 labelText: 'QR Text',
                 labelStyle: const TextStyle(
@@ -62,7 +86,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onChanged: (value) => setState(() {
                 qrText = value;
-                // prefs.setString('qrText', qrText);
+                prefs.setString('qrText', qrText);
               }),
             ),
             const SizedBox(height: 16),
