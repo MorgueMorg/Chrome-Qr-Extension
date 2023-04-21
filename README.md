@@ -1,8 +1,12 @@
-# qr_extension
+# Chrome_Qr_Extension
 
-A new Flutter project.
+A very simple flutter app, or to be more precise, my first attempt to create an extension for the browser
 
-## Getting Started
+# Preview
+
+![Image text](https://github.com/MorgueMorg/Chrome_Qr_Extension/blob/main/lib/result.png)
+
+# Start
 
 This project is a starting point for a Flutter application.
 
